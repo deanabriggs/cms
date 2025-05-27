@@ -7,13 +7,13 @@
     <div class="col-md-4">
         <h2>
             <cms-contact-detail 
-                *ngIf="selectedContact; else infoText"
+                *ngIf="selectedContact;"
                 [contact]="selectedContact"
                 >
             </cms-contact-detail>
-            <ng-template #infoText>
+            <!-- <ng-template #infoText>
                 <p>Select a contact for more detail</p>
-            </ng-template>
+            </ng-template> -->
         </h2>
     </div>
 </div>

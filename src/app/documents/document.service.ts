@@ -5,7 +5,7 @@ import { MOCKDOCUMENTS } from './MOCKDOCUMENTS';
 @Injectable({
   providedIn: 'root'
 })
-export class DocumentsService {
+export class DocumentService {
   documentSelectedEvent = new EventEmitter<Document>();
 
   documents: Document[] = [];

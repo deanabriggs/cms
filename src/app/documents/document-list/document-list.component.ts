@@ -1,6 +1,6 @@
-import { Component, EventEmitter, Injectable, OnInit, Output } from '@angular/core';
+import { Component, Injectable, OnInit } from '@angular/core';
 import { Document } from '../document.model';
-import { DocumentsService } from '../documents.service';
+import { DocumentService } from '../document.service';
 
 @Injectable()
 @Component({
@@ -12,7 +12,7 @@ import { DocumentsService } from '../documents.service';
 export class DocumentListComponent implements OnInit{
     documents: Document[] = []
 
-    constructor(private documentService: DocumentsService) {}
+    constructor(private documentService: DocumentService) {}
 
     ngOnInit(): void {
       this.documents = this.documentService.getDocuments();

@@ -119,6 +119,14 @@ export const MOCKCONTACTS: Contact[] = [
     imageUrl: '/images/thompsonda.jpg',
     group: null
   },
+  {
+    id: '20',
+    name: 'Deana Briggs',
+    email: 'bri23032@byui.edu',
+    phone: '916-770-5211',
+    imageUrl: '/images/briggsd.webp',
+    group: null
+  },
 
   // teams
   // index 13

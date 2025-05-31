@@ -5,6 +5,7 @@ import { MOCKCONTACTS } from './MOCKCONTACTS';
 @Injectable({
   providedIn: 'root'
 })
+
 export class ContactService {
   contactSelectedEvent = new EventEmitter<Contact>();
 
@@ -19,6 +20,12 @@ export class ContactService {
   }
 
   getContact(id: string): Contact | null {
-    return this.contacts.find(c => c.id == id);
+    // return this.contacts.find(c => c.id == id);
+    for (let contact of this.contacts) {
+      if (contact.id === id) {
+        return contact;
+      }
+    }
+    return null;
   }
 }

@@ -4,8 +4,11 @@
         <h1>{{contact.name}}</h1>
         <img src="{{contact.imageUrl}}" alt="picture of {{contact.name}}" class="img-fluid" style="max-height: 100px;">
         <div class="pull-right">
-            <button class="btn btn-primary btn-sm" style="margin-right: 5px">Edit</button>
-            <button class="btn btn-danger btn-sm">Delete</button>
+            <a class="btn btn-primary btn-sm" 
+                style="margin-right: 5px"
+                [routerLink]="['/contacts', contact.id, 'edit']"
+                >Edit</a>
+            <a class="btn btn-danger btn-sm" (click)="onDelete()">Delete</a>
         </div>
     </div>
     <div class="panel-body clearfix">

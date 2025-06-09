@@ -19,8 +19,7 @@ export class DocumentDetailComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private windowRefService: WindRefService
-  ) {
-  }
+  ) {}
 
   ngOnInit(): void {
     this.route.params

@@ -2,15 +2,14 @@
 
     <div class="panel-heading clearfix">
         <h2 class="panel-title pull-left">Contacts</h2>
-        <button class="btn btn-success btn-sm pull-right">New Contact</button>
+        <button class="btn btn-success btn-sm pull-right" [routerLink]="['new']">New Contact</button>
     </div>
     <div class="row">
         <div class="col-xs-12">
             
             <div class="list-group">
                 <cms-contact-item *ngFor="let contactEl of contacts" 
-                    [contact]="contactEl"
-                    (click)="onSelected(contactEl)">
+                    [contact]="contactEl">
                 </cms-contact-item>
             </div>
         </div>

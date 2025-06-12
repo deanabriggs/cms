@@ -1,6 +1,7 @@
-import { Component, Injectable, OnInit } from '@angular/core';
+import { Component, Injectable, OnDestroy, OnInit } from '@angular/core';
 import { Document } from '../document.model';
 import { DocumentService } from '../document.service';
+import { Subscription } from 'rxjs';
 
 @Injectable()
 @Component({
@@ -9,16 +10,29 @@ import { DocumentService } from '../document.service';
   templateUrl: './document-list.component.html',
   styleUrl: './document-list.component.css'
 })
-export class DocumentListComponent implements OnInit{
+export class DocumentListComponent implements OnInit, OnDestroy{
+    private subscription: Subscription;
     documents: Document[] = []
 
     constructor(private documentService: DocumentService) {}
 
     ngOnInit(): void {
       this.documents = this.documentService.getDocuments();
-      this.documentService.documentChangedEvent
-        .subscribe((docs: Document[]) => {
-          this.documents = docs;
-        })
+
+      this.subscription = this.documentService.documentListChangedEvent
+        .subscribe((documentsList: Document[]) => {
+            this.documents = documentsList;
+          }
+        )
+      // this.documentService.documentChangedEvent
+      //   .subscribe((docs: Document[]) => {
+      //     this.documents = docs;
+      //   }) 
     }
+
+    ngOnDestroy(): void {
+      this.subscription.unsubscribe();
+    }
+
+
   }

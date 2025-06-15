@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'cms-contact-edit',
@@ -8,4 +9,11 @@ import { Component } from '@angular/core';
 })
 export class ContactEditComponent {
 
+  constructor(private route: ActivatedRoute,
+    private router: Router
+  ) {}
+
+  onCancel() {
+    this.router.navigate(['../'], {relativeTo: this.route});
+  }
 }

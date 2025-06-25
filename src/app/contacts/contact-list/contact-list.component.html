@@ -4,13 +4,28 @@
         <h2 class="panel-title pull-left">Contacts</h2>
         <button class="btn btn-success btn-sm pull-right" [routerLink]="['new']">New Contact</button>
     </div>
+
     <div class="row">
         <div class="col-xs-12">
-            
             <div class="list-group">
-                <cms-contact-item *ngFor="let contactEl of contacts" 
-                    [contact]="contactEl">
+                <cms-contact-item 
+                    *ngFor="let contactEl of individualContacts" 
+                    [contact]="contactEl"
+                    cdkDrag
+                    [cdkDragData]="contactEl">
                 </cms-contact-item>
+
+                <div *ngFor="let group of groupedContacts"  class="group">
+                    <h4>{{ group.name }}</h4>
+                    <div class="list-group ml-3">
+                        <cms-contact-item 
+                            *ngFor="let member of group.group" 
+                            [contact]="member" 
+                            cdkDrag
+                            [cdkDragData]="member">
+                        </cms-contact-item>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

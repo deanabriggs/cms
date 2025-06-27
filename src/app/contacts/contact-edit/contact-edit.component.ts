@@ -53,11 +53,11 @@ export class ContactEditComponent implements OnInit {
     const value = form.value;
     let contact = new Contact(
       "0",
-      value.contact.name,
-      value.contact.email,
-      value.contact.phone,
-      value.contact.imageUrl,
-      value.contact.group
+      value.name,
+      value.email,
+      value.phone,
+      value.imageUrl,
+      this.groupContacts
     );
 
     if(this.editMode == true) {

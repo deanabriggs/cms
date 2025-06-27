@@ -57,7 +57,7 @@ export class ContactEditComponent implements OnInit {
       value.email,
       value.phone,
       value.imageUrl,
-      this.groupContacts
+      value.group
     );
 
     if(this.editMode == true) {
@@ -98,6 +98,13 @@ export class ContactEditComponent implements OnInit {
       return;
     }
     this.groupContacts.push(selectedContact);
+
+    // if (!this.contact.group) {
+    //   this.contact.group = [];
+    // }
+    // this.contact.group.push(selectedContact);
+
+    this.contact.group = this.groupContacts;
     console.log('Dropped:', selectedContact);
   }
 
@@ -106,6 +113,8 @@ export class ContactEditComponent implements OnInit {
       return;
     }
     this.groupContacts.splice(index, 1);
+
+    this.contact.group = this.groupContacts;    
   }
   
 }

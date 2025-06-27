@@ -77,6 +77,10 @@
               [cdkDropListData]="groupContacts"
               [cdkDropListConnectedTo]="['contactsList']" 
               (cdkDropListDropped)="addToGroup($event)">
+            
+            <div *ngIf="dropInvalid" class="alert alert-danger">
+              Contact is already in the group or invalid and cannot add.
+            </div>
 
             <div *ngFor="let contact of groupContacts; let i = index">
               <div>

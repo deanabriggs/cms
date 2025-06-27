@@ -17,6 +17,7 @@ export class ContactEditComponent implements OnInit {
   groupContacts: Contact[] = [];
   editMode: boolean = false;
   id: string;
+  dropInvalid: boolean = false;
 
   constructor(
     private contactService: ContactService,
@@ -90,6 +91,10 @@ export class ContactEditComponent implements OnInit {
   addToGroup(event: CdkDragDrop<Contact[]>) {
     const selectedContact: Contact = event.item.data;
     if(this.isInvalidContact(selectedContact)) {
+      this.dropInvalid = true;
+      setTimeout(() => {
+        this.dropInvalid = false;
+      }, 3000);
       return;
     }
     this.groupContacts.push(selectedContact);

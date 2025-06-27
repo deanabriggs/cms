@@ -19,7 +19,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { DocumentEditComponent } from './documents/document-edit/document-edit.component';
 import { ContactEditComponent } from './contacts/contact-edit/contact-edit.component';
 import { FormsModule } from '@angular/forms';
-import { CdkDrag } from '@angular/cdk/drag-drop';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 @NgModule({
   declarations: [
@@ -44,7 +44,7 @@ import { CdkDrag } from '@angular/cdk/drag-drop';
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    CdkDrag
+    DragDropModule
   ],
   providers: [],
   bootstrap: [AppComponent]

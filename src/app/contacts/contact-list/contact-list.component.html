@@ -7,25 +7,21 @@
 
     <div class="row">
         <div class="col-xs-12">
-            <div class="list-group">
+
+            <div
+                class="list-group"
+                cdkDropList
+                id="contactsList"
+                [cdkDropListData]="contacts"
+                [cdkDropListConnectedTo]="['groupList']">
+            
                 <cms-contact-item 
-                    *ngFor="let contactEl of individualContacts" 
+                    *ngFor="let contactEl of contacts" 
                     [contact]="contactEl"
                     cdkDrag
                     [cdkDragData]="contactEl">
                 </cms-contact-item>
 
-                <div *ngFor="let group of groupedContacts"  class="group">
-                    <h4>{{ group.name }}</h4>
-                    <div class="list-group ml-3">
-                        <cms-contact-item 
-                            *ngFor="let member of group.group" 
-                            [contact]="member" 
-                            cdkDrag
-                            [cdkDragData]="member">
-                        </cms-contact-item>
-                    </div>
-                </div>
             </div>
         </div>
     </div>

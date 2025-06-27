@@ -3,6 +3,7 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Contact } from '../contact.model';
 import { NgForm } from '@angular/forms';
 import { ContactService } from '../contact.service';
+import { CdkDragDrop } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'cms-contact-edit',
@@ -39,9 +40,10 @@ export class ContactEditComponent implements OnInit {
           this.editMode = true;
           this.contact = JSON.parse(JSON.stringify(this.originalContact));
 
-          if(this.contact.group) {
+          if (this.contact.group) {
             this.groupContacts = JSON.parse(JSON.stringify(this.originalContact.group));
           }
+          console.log('Loaded groupContacts:', this.groupContacts);
         }
       )
   }
@@ -50,11 +52,11 @@ export class ContactEditComponent implements OnInit {
     const value = form.value;
     let contact = new Contact(
       "0",
-      this.contact.name,
-      this.contact.email,
-      this.contact.phone,
-      this.contact.imageUrl,
-      this.contact.group
+      value.contact.name,
+      value.contact.email,
+      value.contact.phone,
+      value.contact.imageUrl,
+      value.contact.group
     );
 
     if(this.editMode == true) {
@@ -69,4 +71,36 @@ export class ContactEditComponent implements OnInit {
   onCancel() {
     this.router.navigate(['/contacts']);
   }
+
+  isInvalidContact(newContact: Contact) {
+    if(!newContact) {
+      return true;
+    }
+    if(this.contact && newContact.id === this.contact.id) {
+      return true;
+    }
+    for(let i=0; i<this.groupContacts.length; i++) {
+      if(newContact.id === this.groupContacts[i].id) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  addToGroup(event: CdkDragDrop<Contact[]>) {
+    const selectedContact: Contact = event.item.data;
+    if(this.isInvalidContact(selectedContact)) {
+      return;
+    }
+    this.groupContacts.push(selectedContact);
+    console.log('Dropped:', selectedContact);
+  }
+
+  onRemoveItem(index: number) {
+    if(index < 0 || index >= this.groupContacts.length) {
+      return;
+    }
+    this.groupContacts.splice(index, 1);
+  }
+  
 }

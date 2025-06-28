@@ -56,7 +56,7 @@ export class DocumentService {
     if(!newDocument) {
       return;
     }
-    newDocument.id = String(this.maxDocumentId++);
+    newDocument.id = String(++this.maxDocumentId);
     this.documents.push(newDocument);
     let documentsListClone = this.documents.slice();
     this.documentListChangedEvent.next(documentsListClone);

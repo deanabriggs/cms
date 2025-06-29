@@ -10,18 +10,20 @@ import { MessageService } from '../message.service';
   styleUrl: './message-edit.component.css'
 })
 export class MessageEditComponent {
-  currentSender:string = "20";
   @ViewChild('subject') subjectInputRef: ElementRef;
   @ViewChild('msgText') msgTextInputRef: ElementRef;
   @Output() addMessageEvent = new EventEmitter<Message>();
-  
+    
+  currentSender:string = "19";
+
   constructor (private msgService: MessageService) {}
 
   onSendMessage(){
+    const newMsgId = String(this.msgService.maxMessageId);
     const theSubject = this.subjectInputRef.nativeElement.value;
     const theMsg = this.msgTextInputRef.nativeElement.value;
     const theSender = this.currentSender;
-    const newMessage = new Message("10", theSubject, theMsg, theSender);
+    const newMessage = new Message(newMsgId, theSubject, theMsg, theSender);
     // this.addMessageEvent.emit(newMessage);
     this.msgService.addMessage(newMessage);
   }
@@ -30,5 +32,4 @@ export class MessageEditComponent {
     this.subjectInputRef.nativeElement.value = "";
     this.msgTextInputRef.nativeElement.value = "";
   }
-
 }

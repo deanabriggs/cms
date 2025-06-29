@@ -30,7 +30,7 @@ export class MessageService {
 
   getMessages() {
     this.contactService.getContacts();
-    
+
     this.http
       .get<Message[]>('https://rkjcms-5f317-default-rtdb.firebaseio.com/messages.json')
       .subscribe(
@@ -54,7 +54,6 @@ export class MessageService {
       return;
     }
     newMessage.id = String(++this.maxMessageId);
-    console.log(newMessage.id);
     this.messages.push(newMessage);
     this.storeMessages();
   }

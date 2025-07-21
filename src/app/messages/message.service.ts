@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Message } from './message.model';
-import { MOCKMESSAGES } from './MOCKMESSAGES';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Subject } from 'rxjs';
-import { ContactService } from '../contacts/contact.service';
+// import { MOCKMESSAGES } from './MOCKMESSAGES';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +12,7 @@ export class MessageService {
   messages: Message[] = [];
   maxMessageId: number;
 
-  constructor(private http: HttpClient, private contactService: ContactService) {
+  constructor(private http: HttpClient) {
     // this.messages = MOCKMESSAGES;
   }
 
@@ -29,22 +28,23 @@ export class MessageService {
   }
 
   getMessages() {
-    this.contactService.getContacts();
-
     this.http
-      .get<Message[]>('https://rkjcms-5f317-default-rtdb.firebaseio.com/messages.json')
+      .get<Message[]>('http://localhost:3000/messages')
       .subscribe(
+        // success method
         (messages: Message[]) => {
           this.messages = messages;
           this.maxMessageId = this.getMaxId();
+          this.messages.sort((a, b) => a.subject.localeCompare(b.subject));
           this.messageChangedEvent.next(this.messages.slice());
         },
+        // error method
         (error: any) => {
           console.error(error);
         }
       )
   }
-
+    
   getMessage(id: string): Message | null {
     return this.messages.find(m => m.id == id);
   }
@@ -53,16 +53,29 @@ export class MessageService {
     if(!newMessage) {
       return;
     }
-    newMessage.id = String(++this.maxMessageId);
-    this.messages.push(newMessage);
-    this.storeMessages();
+    // newMessage.id = String(++this.maxMessageId);
+    // this.messages.push(newMessage);
+    // this.storeMessages();
+    newMessage.id = "";
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+
+    this.http.post<{message: Message}>('http://localhost:3000/messages', newMessage, { headers: headers })
+      .subscribe(
+        (responseData) => {
+          this.messages.push(responseData.message);
+          this.messageChangedEvent.next(this.messages.slice());
+        },
+        (error: any) => {
+          console.error(error);
+        }
+      );
   }
 
   storeMessages() {
     const msgJson = JSON.stringify(this.messages);
     const headers = new HttpHeaders({ 'Content-Type': 'application/json'});
     this.http
-      .put('https://rkjcms-5f317-default-rtdb.firebaseio.com/messages.json', msgJson, { headers })
+      .put('http://localhost:3000/messages', msgJson, { headers })
       .subscribe(() => {
         this.messageChangedEvent.next(this.messages.slice());
       })

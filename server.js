@@ -5,6 +5,7 @@ var http = require("http");
 var bodyParser = require("body-parser");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
+var mongoose = require("mongoose");
 
 // import the routing file to handle the default (index) route
 var index = require("./server/routes/app");
@@ -13,6 +14,18 @@ var index = require("./server/routes/app");
 const messageRoutes = require("./server/routes/messages");
 const contactRoutes = require("./server/routes/contacts");
 const documentsRoutes = require("./server/routes/documents");
+
+// Connect to the MongoDB database
+mongoose
+  .connect("mongodb://127.0.0.1:27017/cms", {
+    useNewUrlParser: true,
+  })
+  .then(() => {
+    console.log("Connected to database!");
+  })
+  .catch((err) => {
+    console.error("Connection failed: " + err);
+  });
 
 var app = express(); // create an instance of express
 
@@ -43,7 +56,7 @@ app.use((req, res, next) => {
 
 // Tell express to use the specified director as the
 // root directory for your web site
-app.use(express.static(path.join(__dirname, "dist/cms/browser")));
+app.use(express.static(path.join(__dirname, "dist/cms/browser"))); // added "browser" to path to match mapping
 
 // Tell express to map the default route ('/') to the index route
 app.use("/", index);
@@ -54,8 +67,9 @@ app.use("/contacts", contactRoutes);
 app.use("/documents", documentsRoutes);
 
 // Tell express to map all other non-defined routes back to the index page
+// Newer version required syntax change form "*" to /.*/
 app.get(/.*/, (req, res) => {
-  res.sendFile(path.join(__dirname, "dist/cms/browser/index.html"));
+  res.sendFile(path.join(__dirname, "dist/cms/browser/index.html")); // added "browser" to path to match mapping
 });
 
 // Define the port address and tell express to use this port

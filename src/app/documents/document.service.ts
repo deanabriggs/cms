@@ -1,8 +1,9 @@
 import { EventEmitter, Injectable } from '@angular/core';
 import { Document } from './document.model';
-import { MOCKDOCUMENTS } from './MOCKDOCUMENTS';
 import { Subject } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+// import { MOCKDOCUMENTS } from './MOCKDOCUMENTS';
+// import { response } from 'express';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +22,7 @@ export class DocumentService {
 
   getDocuments() {
     this.http
-      .get<Document[]>('https://rkjcms-5f317-default-rtdb.firebaseio.com/documents.json')
+      .get<Document[]>('http://localhost:3000/documents')
       .subscribe(
         // success method
         (documents: Document[]) => {
@@ -45,13 +46,21 @@ export class DocumentService {
     if(!document) {
       return;
     }
-    const pos = this.documents.indexOf(document);
-    if (pos < 0) {
-      return;
-    }
-    this.documents.splice(pos, 1);
-    
-    this.storeDocuments();
+    const pos = this.documents.findIndex(d => d.id === document.id);
+    if (pos < 0) {return;}
+
+    // const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+
+    this.http.delete('http://localhost:3000/documents/' + document.id)
+      .subscribe(
+        (response: Response) => {      
+          this.documents.splice(pos, 1);
+          this.documentListChangedEvent.next(this.documents.slice());
+        },
+        (error: any) => {
+          console.error(error);
+        }
+      );
   }
 
   private getMaxId(): number {
@@ -69,10 +78,24 @@ export class DocumentService {
     if(!newDocument) {
       return;
     }
-    newDocument.id = String(++this.maxDocumentId);
-    this.documents.push(newDocument);
-    
-    this.storeDocuments();
+    // newDocument.id = String(++this.maxDocumentId);
+    // this.documents.push(newDocument);
+    // this.storeDocuments();
+
+    newDocument.id = "";
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    this.http
+      .post<{message: string, document: Document}>('http://localhost:3000/documents', newDocument, { headers: headers })
+      .subscribe(
+        (responseData) => {
+          this.documents.push(responseData.document);
+          this.documentListChangedEvent.next(this.documents.slice());
+        },
+        (error: any) => {
+          console.error(error);
+        }
+      );
+      // this.storeDocuments();
   }
 
   updateDocument(originalDoc: Document, newDoc: Document) {
@@ -80,22 +103,29 @@ export class DocumentService {
       return;
     }
     
-    let pos = this.documents.indexOf(originalDoc);
+    // const pos = this.documents.indexOf(originalDoc);
+    const pos = this.documents.findIndex(d => d.id === originalDoc.id);
     if(pos < 0){
       return;
     }
     
     newDoc.id = originalDoc.id;
-    this.documents[pos] = newDoc;
+    newDoc._id = originalDoc._id; // Ensure the MongoDB _id is preserved
 
-    this.storeDocuments();
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    this.http.put('http://localhost:3000/documents/' + originalDoc.id, newDoc, { headers: headers })
+      .subscribe((response: Response) => {
+          this.documents[pos] = newDoc;
+          this.documentListChangedEvent.next(this.documents.slice());
+        }
+      );
   }
 
   storeDocuments() {
     const docsJson = JSON.stringify(this.documents);
     const headers = new HttpHeaders({ 'Content-Type': 'application/json'});
     this.http
-      .put('https://rkjcms-5f317-default-rtdb.firebaseio.com/documents.json', docsJson, { headers })
+      .put('http://localhost:3000/documents', docsJson, { headers })
       .subscribe(() => {
         this.documentListChangedEvent.next(this.documents.slice());
       })

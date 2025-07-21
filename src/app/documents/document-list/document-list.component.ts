@@ -8,7 +8,7 @@ import { Subscription } from 'rxjs';
   selector: 'cms-document-list',
   standalone: false,
   templateUrl: './document-list.component.html',
-  styleUrl: './document-list.component.css'
+  styleUrls: ['./document-list.component.css']
 })
 export class DocumentListComponent implements OnInit, OnDestroy{
     private subscription: Subscription;
@@ -34,6 +34,4 @@ export class DocumentListComponent implements OnInit, OnDestroy{
     ngOnDestroy(): void {
       this.subscription.unsubscribe();
     }
-
-
   }

@@ -14,17 +14,18 @@ export class MessageEditComponent {
   @ViewChild('msgText') msgTextInputRef: ElementRef;
   @Output() addMessageEvent = new EventEmitter<Message>();
     
-  currentSender:string = "19";
+  currentSender:string = "6872b4cdbf663eaa1d0d8191";
 
   constructor (private msgService: MessageService) {}
 
-  onSendMessage(){
+  onSendMessage(){  
     const newMsgId = String(this.msgService.maxMessageId);
     const theSubject = this.subjectInputRef.nativeElement.value;
     const theMsg = this.msgTextInputRef.nativeElement.value;
     const theSender = this.currentSender;
     const newMessage = new Message(newMsgId, theSubject, theMsg, theSender);
     // this.addMessageEvent.emit(newMessage);
+    console.log(newMessage);
     this.msgService.addMessage(newMessage);
   }
 

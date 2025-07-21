@@ -4,6 +4,7 @@
   <div class="clearfix">
     <h4 class="pull-left" style="margin: 0;">{{ contact?.name }}</h4>
     <img 
+      *ngIf="contact?.imageUrl"
       [src]="contact?.imageUrl" 
       [alt]="contact?.name" 
       class="pull-right" 

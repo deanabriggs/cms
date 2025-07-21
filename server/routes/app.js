@@ -3,11 +3,7 @@ var router = express.Router();
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
-  res.sendFile(path.join(__dirname, "dist/cms/browser/index.html"));
+  res.sendFile(path.join(__dirname, "dist/cms/browser/index.html")); // added "browser" to path to match mapping
 });
-
-// router.get("/", function (req, res, next) {
-//   res.render("index", { title: "CMS" });
-// });
 
 module.exports = router;

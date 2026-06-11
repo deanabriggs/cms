@@ -1,59 +1,28 @@
-# Cms
+# CMS — Content Management System
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.9.
+A single-page Content Management System built with Angular (Angular CLI v19). The application manages contacts, documents, and messages, with data persisted to a MongoDB database through a separate Node/Express backend API.
 
-## Development server
+## Features
 
-To start a local development server, run:
+The application is organized into three feature areas. The Contacts feature provides full create, view, edit, and delete (CRUD) functionality with a contact-list, contact-detail, and contact-item component structure, a custom filter pipe for searching contacts, and cross-component communication. The Documents feature lets you browse and manage documents using a nested menu and a custom dropdown directive in the shared module. The Messages feature lets you post and view messages.
 
-```bash
-ng serve
+Navigation across features uses the Angular Router, data entry is handled with Angular forms, and all data access happens over Angular's HttpClient against a Node/Express REST API backed by MongoDB.
+
+## Tech Stack
+
+Frontend: Angular (CLI v19) with TypeScript. Styling: CSS. Backend: Node.js with Express. Database: MongoDB.
+
+## Project Structure
+
+```
+src/app/
+  contacts/   Contact feature: list, detail, item, edit, model, service, filter pipe
+  documents/  Document feature and management
+  messages/   Message feature
+  shared/     Layout, navigation, shared components and directives
+server/       Node/Express backend API
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## Getting Started
 
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Prerequisites: Node.js and npm, plus a running MongoDB instance. Install dependencies with `npm install`. Start the backend with `node server.js`, then start the development server with `ng serve` and open http://localhost:4200/. The app reloads automatically on source changes. Build the project with `ng build` (artifacts are output to the `dist/` directory) and run unit tests with `ng test` using the Karma test runner.
